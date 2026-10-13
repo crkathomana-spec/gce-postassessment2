@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GCE Designs Partnership & Launch Assessment</title>
+<link rel="preconnect" href="https://googleapis.com">
+<link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F6FA; --card:#FFFFFF; --ink:#1B2140; --muted:#5A6180; --line:#D9DCE8;
+  --cobalt:#2F5BEA; --cobalt-soft:#E6ECFD; --marigold:#F2B705; --ok:#1E8A5A; --warn:#B4441E;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#12152A; --card:#1B1F38; --ink:#ECEEF7; --muted:#A3A9C6; --line:#2E3355;
+    --cobalt:#7C9BFF; --cobalt-soft:#262E5C; --marigold:#F5C842; --ok:#4CC28C; --warn:#F08A63;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12152A; --card:#1B1F38; --ink:#ECEEF7; --muted:#A3A9C6; --line:#2E3355;
+  --cobalt:#7C9BFF; --cobalt-soft:#262E5C; --marigold:#F5C842; --ok:#4CC28C; --warn:#F08A63;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:6px}
+.shell{display:grid;grid-template-columns:270px minmax(0,1fr);max-width:1180px;margin:0 auto;min-height:100vh}
+aside{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;height:100vh;padding:32px 20px 24px 28px;overflow:auto;border-right:1px solid var(--line)}
+.brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:15px;color:var(--muted);margin-bottom:22px}
+.brand b{display:block;color:var(--ink);font-size:20px}
+.nav{list-style:none;padding:0;margin:0;counter-reset:s}
+.nav li button{all:unset;cursor:pointer;display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:start;width:100%;padding:7px 8px;border-radius:8px;font-size:15px;line-height:1.35;color:var(--muted)}
+.nav li button:hover{background:var(--cobalt-soft)}
+.nav li button:focus-visible{outline:3px solid var(--cobalt)}
+.nav .num{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;border:1.5px solid var(--line)}
+.nav li.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.nav li.current button{color:var(--ink);font-weight:700;background:var(--cobalt-soft)}
+.nav li.current .num{border-color:var(--cobalt);color:var(--cobalt)}
+.save-state{margin-top:22px;font-size:14px;color:var(--muted)}
+main{padding:40px 48px 120px;min-width:0}
+.topbar{display:none}
+.tabs{display:flex;gap:6px;margin-bottom:26px}
+.tabs button{border:1.5px solid var(--line);background:var(--card);padding:6px 14px;border-radius:999px;cursor:pointer;font-size:15px}
+.tabs button[aria-pressed="true"]{border-color:var(--cobalt);color:var(--cobalt);font-weight:700}
+.intro{max-width:720px}
+.intro h1{font-size:clamp(30px,4.5vw,46px);font-weight:700;letter-spacing:-.01em}
+.intro p{color:var(--muted);margin:14px 0 0}
+.scale-key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--muted);margin-top:16px}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px;max-width:720px}
+label.f{display:block;font-size:15px;font-weight:700}
+input[type=text],textarea{width:100%;margin-top:6px;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+textarea{min-height:110px;resize:vertical}
+input[type=text]:focus,textarea:focus{border-color:var(--cobalt);outline:none;box-shadow:0 0 0 3px var(--cobalt-soft)}
+.section-head{margin:40px 0 8px;max-width:760px}
+.section-head .of{font-size:15px;color:var(--muted)}
+.section-head h2{font-size:clamp(26px,3.4vw,34px);margin-top:4px}
+.sub{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:18px;color:var(--cobalt);margin:30px 0 4px}
+.q{max-width:760px;padding:22px 0;border-bottom:1px solid var(--line)}
+.q:last-child{border-bottom:0}
+.q .qt{display:grid;grid-template-columns:36px 1fr;gap:6px;font-weight:700;margin-bottom:12px}
+.q .qn{color:var(--muted);font-weight:400;font-variant-numeric:tabular-nums}
+.q .body{margin-left:42px}
+.hint{font-size:14px;color:var(--muted);margin:-6px 0 10px}
+.rating{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chip span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:64px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);cursor:pointer;line-height:1.2;text-align:center}
+.chip span b{font-family:"Bricolage Grotesque",sans-serif;font-size:20px}
+.chip span small{font-size:12px;color:var(--muted)}
+.chip input:checked + span{border-color:var(--cobalt);background:var(--cobalt);color:#fff}
+.chip input:checked + span small{color:#fff}
+.chip input:focus-visible + span{outline:3px solid var(--cobalt);outline-offset:2px}
+.chip.na span{min-width:auto;padding:8px 14px;font-size:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts.row{flex-direction:row;flex-wrap:wrap}
+.opts .chip span{flex-direction:row;min-width:auto;padding:8px 16px}
+.grid-wrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px;background:var(--card)}
+table.grid{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+table.grid th,table.grid td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--line)}
+table.grid th:first-child,table.grid td:first-child{text-align:left}
+table.grid thead th{font-weight:700;color:var(--muted);font-size:13px;line-height:1.25}
+table.grid tbody tr:last-child td{border-bottom:0}
+table.grid tbody th small{display:block;color:var(--muted);font-size:13px;line-height:1.3}
+table.grid input{width:20px;height:20px;accent-color:var(--cobalt);cursor:pointer}
+.follow{margin-top:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;max-width:760px;margin-top:34px}
+.btn{border:0;border-radius:10px;padding:12px 22px;font-weight:700;cursor:pointer;background:var(--cobalt);color:#fff;font-size:16px}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.banner{max-width:760px;padding:12px 16px;border-radius:10px;border:1.5px solid var(--warn);color:var(--warn);margin-bottom:20px;font-size:15px}
+.done-card{max-width:640px;margin-top:60px}
+.done-card h2{font-size:36px}
+.done-card p{color:var(--muted)}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:10px}
+.prog i{display:block;height:100%;background:var(--marigold);width:0;transition:width .3s}
+[hidden]{display:none!important}
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  aside{display:none}
+  main{padding:20px 18px 100px}
+  .topbar{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding:10px 0 12px;margin:-20px 0 8px;border-bottom:1px solid var(--line)}
+  .topbar .t{font-size:14px;color:var(--muted);display:flex;justify-content:space-between}
+  .who{grid-template-columns:1fr}
+  .q .qt{grid-template-columns:30px 1fr}
+  .q .body{margin-left:0}
+  .chip span{min-width:52px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside aria-label="Survey sections">
+    <div class="brand">Spectrum Designs<b>GCE Partnership Assessment</b></div>
+    <ol class="nav" id="nav"></ol>
+    <div class="save-state" id="saveState" aria-live="polite"></div>
+  </aside>
+  <main>
+    <div class="topbar"><div class="t"><span id="topSection"></span><span id="topSave"></span></div><div class="prog"><i id="topProg"></i></div></div>
+    <div id="banner" class="banner" hidden></div>
+    <div id="surveyView">
+      <div id="welcome" class="intro">
+        <h1>GCE Designs Partnership &amp; Launch Assessment</h1>
+        <p>Spectrum Designs wants to learn from launching and supporting GCE Designs: what worked, what was hard, what we should do differently, and what support would help from here. Your answers will shape how we support the next organization through a launch like this.</p>
+        <p>Your answers are saved in this browser as you go, so you can stop and come back on the same device. Skip anything that doesn't apply to you.</p>
+        <div class="scale-key"><span>1 Very poor</span><span>2 Poor</span><span>3 Fair</span><span>4 Good</span><span>5 Excellent</span><span>N/A Didn't interact with this area</span></div>
+        <div class="who">
+          <label class="f">Your name<input type="text" id="rName" autocomplete="name"></label>
+          <label class="f">Your role at GCE<input type="text" id="rRole"></label>
+        </div>
+      </div>
+      <form id="form" onsubmit="return false"></form>
+      <div class="pager">
+        <button type="button" class="btn ghost" id="prev">Back</button>
+        <button type="button" class="btn" id="next">Next section</button>
+      </div>
+    </div>
+    <div id="doneView" class="done-card" hidden>
+      <h2>Thank you, your survey is submitted.</h2>
+      <p>Spectrum Designs will review every response before planning the next partnership.</p>
+      <p id="doneNote"></p>
